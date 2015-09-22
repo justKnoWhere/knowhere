@@ -1,2 +1,2 @@
 # knowhere
-knowhere source code
+When committing to this respository, please use LF (Unix Style) line endings.
