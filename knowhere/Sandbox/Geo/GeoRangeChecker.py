@@ -1,6 +1,7 @@
+from math import radians, sin, cos, sqrt, asin
+
 __author__ = 'Adam'
 
-import math
 
 kmInMile = 0.62137119
 
