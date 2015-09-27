@@ -49,11 +49,11 @@ class NotificationTest(TestCase):
 
     notification = Notification()
 
-    def test_user_creation(self):
-        self.given_a_new_notification_is_created()
+    def test_notification_creation(self):
+        self.given_user_has_user_account_is_created()
         self.then_the_notification_has_expected_values()
 
-    def given_a_new_notification_is_created(self):
+    def given_user_has_user_account_is_created(self):
         self.notification = Notification.objects.create(
             id=self.ID,
             name=self.NAME,
@@ -65,7 +65,7 @@ class NotificationTest(TestCase):
             time=self.TIME
         )
 
-    def then_the_user_has_expected_values(self):
+    def then_the_notification_has_expected_values(self):
         self.assertTrue(isinstance(self.notification, Notification))
         self.assertEqual(self.notification.id, self.ID)
         self.assertEqual(self.notification.name, self.NAME)
@@ -75,3 +75,28 @@ class NotificationTest(TestCase):
         self.assertEqual(self.notification.zipcode, self.ZIPCODE)
         self.assertEqual(self.notification.date, self.DATE)
         self.assertEqual(self.notification.time, self.TIME)
+
+
+class NotifcationGroupTest(TestCase):
+    NAME = "GROUP TEST"
+    EMAIL = "test@email.com"
+    EMAIL_LIST = "{\"emailList\":[{\"email\":\"email1@email.com\"},{\"email2\":\"email1@email.com\"}]}"
+
+    notification = Notification()
+
+    def test_group_creation(self):
+        self.given_user_has_user_account_is_created()
+        self.then_the_group_has_expected_values()
+
+    def given_user_has_user_account_is_created(self):
+        self.notification = Notification.objects.create(
+            id=self.NAME,
+            name=self.EMAIL,
+            address=self.EMAIL_LIST,
+        )
+
+    def then_the_group_has_expected_values(self):
+        self.assertTrue(isinstance(self.notification, Notification))
+        self.assertEqual(self.notification.id, self.NAME)
+        self.assertEqual(self.notification.name, self.EMAIL)
+        self.assertEqual(self.notification.address, self.EMAIL_LIST)

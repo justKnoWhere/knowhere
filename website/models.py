@@ -20,3 +20,11 @@ class Notification(models.Model):
     zipcode = models.CharField(max_length=64)
     date = models.DateField(max_length=64)
     time = models.DateTimeField(max_length=64)
+
+
+class Group(models.Model):
+    id = models.CharField(max_length=64)
+    name = models.CharField(max_length=64)
+    email = models.CharField(max_lengh=64)
+    emailList = models.CharField(max_length=2048)
+    #Maybe convert the database entry into JSON string; I'm not really sure how to back a select/combo box
