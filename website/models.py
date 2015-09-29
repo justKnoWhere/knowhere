@@ -11,7 +11,7 @@ class User(models.Model):
 
 
 class Notification(models.Model):
-    id = models.CharField(max_length=64)
+    user = models.ForeignKey(User)
     name = models.CharField(max_length=64)
     notification_group = models.CharField(max_length=64)
     address = models.CharField(max_length=64)
@@ -23,7 +23,7 @@ class Notification(models.Model):
 
 
 class Group(models.Model):
-    id = models.CharField(max_length=64)
+    user = models.ForeignKey(User)
     name = models.CharField(max_length=64)
     email = models.CharField(max_lengh=64)
     emailList = models.CharField(max_length=2048)

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from website.models import User, Notification
+from website.models import User, Notification, Group
 
 
 class UserTest(TestCase):
@@ -37,7 +37,6 @@ class UserTest(TestCase):
 
 
 class NotificationTest(TestCase):
-    ID = "1234ABCD"
     NAME = "My Notification"
     NOTIFICATION_GROUP = "My Group"
     ADDRESS = "123 Main St."
@@ -50,12 +49,11 @@ class NotificationTest(TestCase):
     notification = Notification()
 
     def test_notification_creation(self):
-        self.given_user_has_user_account_is_created()
+        self.given_the_notification_is_created()
         self.then_the_notification_has_expected_values()
 
-    def given_user_has_user_account_is_created(self):
+    def given_the_notification_is_created(self):
         self.notification = Notification.objects.create(
-            id=self.ID,
             name=self.NAME,
             address=self.ADDRESS,
             city=self.CITY,
@@ -67,7 +65,6 @@ class NotificationTest(TestCase):
 
     def then_the_notification_has_expected_values(self):
         self.assertTrue(isinstance(self.notification, Notification))
-        self.assertEqual(self.notification.id, self.ID)
         self.assertEqual(self.notification.name, self.NAME)
         self.assertEqual(self.notification.address, self.ADDRESS)
         self.assertEqual(self.notification.city, self.CITY)
@@ -82,21 +79,21 @@ class NotifcationGroupTest(TestCase):
     EMAIL = "test@email.com"
     EMAIL_LIST = "{\"emailList\":[{\"email\":\"email1@email.com\"},{\"email2\":\"email1@email.com\"}]}"
 
-    notification = Notification()
+    group = Group()
 
     def test_group_creation(self):
-        self.given_user_has_user_account_is_created()
+        self.given_group_is_created()
         self.then_the_group_has_expected_values()
 
-    def given_user_has_user_account_is_created(self):
+    def given_group_is_created(self):
         self.notification = Notification.objects.create(
-            id=self.NAME,
-            name=self.EMAIL,
-            address=self.EMAIL_LIST,
+            name=self.NAME,
+            email=self.EMAIL,
+            address=self.EMAIL_LIST
         )
 
     def then_the_group_has_expected_values(self):
         self.assertTrue(isinstance(self.notification, Notification))
-        self.assertEqual(self.notification.id, self.NAME)
-        self.assertEqual(self.notification.name, self.EMAIL)
+        self.assertEqual(self.notification.name, self.NAME)
+        self.assertEqual(self.notification.email, self.EMAIL)
         self.assertEqual(self.notification.address, self.EMAIL_LIST)
