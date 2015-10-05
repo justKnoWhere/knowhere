@@ -13,7 +13,7 @@ class User(models.Model):
 class Notification(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=64)
-    notification_group = models.CharField(max_length=64)
+    notification_groups = models.ManyToManyField(Group)
     address = models.CharField(max_length=64)
     city = models.CharField(max_length=254)
     state = models.CharField(max_length=64)
