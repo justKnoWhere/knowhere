@@ -1,5 +1,5 @@
 from django.test import TestCase
-from website.models import User, Notification, Group
+from website.models import User, Group, Notification, NotificationZone
 
 
 class UserTest(TestCase):
@@ -110,3 +110,56 @@ class NotificationTest(TestCase):
         self.assertEqual(self.notification.zipcode, self.ZIPCODE)
         self.assertEqual(self.notification.date, self.DATE)
         self.assertEqual(self.notification.time, self.TIME)
+
+
+class NotificationZoneTest(TestCase):
+    USERNAME = "notificationUser"
+    NAME = "My Notification Zone"
+    GROUP_NAME_1 = "My Group 1"
+    GROUP_NAME_2 = "My Group 2"
+    ADDRESS = "123 Main St."
+    CITY = "San Antonio"
+    STATE = "TX"
+    ZIPCODE = "12345"
+    LATITUDE = 40.814796
+    LONGITUDE = -77.865313
+    RADIUS = 1.5
+
+    notification_zone = NotificationZone()
+
+    def test_notification_creation(self):
+        self.given_the_notification_is_created()
+        self.then_the_notification_has_expected_values()
+
+    def given_the_notification_is_created(self):
+        user = User.objects.create(username=self.USERNAME)
+        group1 = Group.objects.create(name=self.GROUP_NAME_1)
+        group2 = Group.objects.create(name=self.GROUP_NAME_2)
+
+        self.notification_zone = NotificationZone.objects.create(
+            user=user,
+            name=self.NAME,
+            address=self.ADDRESS,
+            city=self.CITY,
+            state=self.STATE,
+            zipcode=self.ZIPCODE,
+            latitude=self.LATITUDE,
+            longitude=self.LONGITUDE,
+            radius=self.RADIUS
+        )
+        self.notification_zone.groups.add(group1, group2)
+
+    def then_the_notification_has_expected_values(self):
+        notification_zone_groups = self.notification_zone.groups.all()
+        self.assertTrue(isinstance(self.notification_zone, NotificationZone))
+        self.assertEqual(self.notification_zone.user.username, self.USERNAME)
+        self.assertEqual(notification_zone_groups[0].name, self.GROUP_NAME_1)
+        self.assertEqual(notification_zone_groups[1].name, self.GROUP_NAME_2)
+        self.assertEqual(self.notification_zone.name, self.NAME)
+        self.assertEqual(self.notification_zone.address, self.ADDRESS)
+        self.assertEqual(self.notification_zone.city, self.CITY)
+        self.assertEqual(self.notification_zone.state, self.STATE)
+        self.assertEqual(self.notification_zone.zipcode, self.ZIPCODE)
+        self.assertEqual(self.notification_zone.latitude, self.LATITUDE)
+        self.assertEqual(self.notification_zone.longitude, self.LONGITUDE)
+        self.assertEqual(self.notification_zone.radius, self.RADIUS)

@@ -27,3 +27,15 @@ class Notification(models.Model):
     time = models.TimeField()
 
 
+class NotificationZone(models.Model):
+    user = models.ForeignKey(User)
+    groups = models.ManyToManyField(Group)
+    name = models.CharField(max_length=64)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    address = models.CharField(max_length=64)
+    city = models.CharField(max_length=254)
+    state = models.CharField(max_length=64)
+    zipcode = models.CharField(max_length=64)
+    radius = models.DecimalField(max_digits=9, decimal_places=2)
+
