@@ -1,22 +1,18 @@
+from django.conf import settings
 from django.db import models
 
-
-class User(models.Model):
-    username = models.CharField(max_length=64)
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
-    email_address = models.CharField(max_length=254)
-    password = models.CharField(max_length=64)
-    salt = models.CharField(max_length=64)
-
-
 class Group(models.Model):
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+    )
     name = models.CharField(max_length=64)
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     title = models.CharField(max_length=64)
     groups = models.ManyToManyField(Group)
     address = models.CharField(max_length=64)
@@ -28,7 +24,9 @@ class Notification(models.Model):
 
 
 class NotificationZone(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+    )
     groups = models.ManyToManyField(Group)
     name = models.CharField(max_length=64)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)

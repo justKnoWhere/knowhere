@@ -4,6 +4,6 @@
 
 {% block content %}
     <div class="row">
-        we are home
+        Am I logged in? {{ request.user.is_authenticated }}
     </div>
 {% endblock %}
