@@ -4,6 +4,6 @@
 
 {% block content %}
     <div class="row">
-        we are {% if request.user.is_authenticated %}logged in{% else %}not logged in{% endif %}
+        Am I logged in? {{ request.user.is_authenticated }}
     </div>
 {% endblock %}

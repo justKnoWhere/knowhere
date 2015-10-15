@@ -54,6 +54,7 @@ INSTALLED_APPS = (
 )
 
 SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
