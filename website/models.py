@@ -26,9 +26,9 @@ class Notification(models.Model):
 
 class NotificationZone(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        settings.AUTH_USER_MODEL
     )
-    groups = models.ManyToManyField(Group)
+    groups = models.ManyToManyField(Group, blank=True)
     name = models.CharField(max_length=64)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
