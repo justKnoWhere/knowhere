@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext, loader
-from website.forms import NotificationZoneForm
-from website.models import NotificationZone
+from website.forms import NotificationZoneForm, GroupForm
+from website.models import NotificationZone, Group
 
 
 def index(request):
@@ -26,3 +26,21 @@ def notification_zone_new(request):
 def notification_zone_detail(request, pk):
     notification_zone = get_object_or_404(NotificationZone, pk=pk)
     return render(request, 'website/notification_zone_detail.html', {'notification_zone': notification_zone})
+
+
+def group_new(request):
+    if request.method == "POST":
+        form = GroupForm(request.POST)
+        if form.is_valid():
+            group = form.save(commit=False)
+            group.save()
+            group.users.add(request.user);
+            return redirect('website.views.group_detail', pk=group.pk)
+    else:
+        form = GroupForm()
+    return render(request, 'website/group_edit.html', {'form': form})
+
+
+def group_detail(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    return render(request, 'website/group_detail.html', {'group': group})
