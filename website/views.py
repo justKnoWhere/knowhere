@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext, loader
-from website.forms import NotificationZoneForm, GroupForm
-from website.models import NotificationZone, Group
+from website.forms import NotificationZoneForm, GroupForm, NotificationForm
+from website.models import NotificationZone, Group, Notification
 
 
 def index(request):
@@ -44,3 +44,21 @@ def group_new(request):
 def group_detail(request, pk):
     group = get_object_or_404(Group, pk=pk)
     return render(request, 'website/group_detail.html', {'group': group})
+
+
+def notification_new(request):
+    if request.method == "POST":
+        form = NotificationForm(request.POST)
+        if form.is_valid():
+            notification = form.save(commit=False)
+            notification.user = request.user;
+            notification.save()
+            return redirect('website.views.notification_detail', pk=notification.pk)
+    else:
+        form = NotificationForm()
+    return render(request, 'website/notification_edit.html', {'form': form})
+
+
+def notification_detail(request, pk):
+    notification = get_object_or_404(Notification, pk=pk)
+    return render(request, 'website/notification_detail.html', {'notification': notification})
