@@ -50,11 +50,13 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google'
+    'allauth.socialaccount.providers.google',
+    'crispy_forms'
 )
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
