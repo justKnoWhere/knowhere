@@ -4,8 +4,6 @@
 
 {% block content %}
     <h1>New Notification Zone</h1>
-    <form method="POST" class="notification-zone-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+    {% load crispy_forms_tags %}
+    {% crispy form %}
 {% endblock %}
