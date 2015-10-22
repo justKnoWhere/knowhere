@@ -1,9 +1,5 @@
-{% extends "website/__base.html" %}
+{% extends "website/__form.html" %}
 
-{% block title %}Group{% endblock %}
-
-{% block content %}
+{% block form_title %}
     <h1>New Group</h1>
-    {% load crispy_forms_tags %}
-    {% crispy form %}
 {% endblock %}
