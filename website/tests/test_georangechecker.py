@@ -1,23 +1,32 @@
-from GeoRangeChecker import getDistanceKm, getDistanceMi, isInRange
+from django.test import TestCase
 
-__author__ = 'Adam'
+from website.util.georangechecker import GeoRangeChecker
 
-originLat1 = 29.443612
-originLon1 = -98.613699
 
-destinationLat1 = 29.452095
-destinationLon1 = -98.609837
+class GeoRangeCheckerTest(TestCase):
 
-theRange = 1.015
+    ORIGIN_LAT = 29.443612
+    ORIGIN_LON = -98.613699
 
-print "Distance in km: ", getDistanceKm(originLat1, originLon1, destinationLat1, destinationLon1)
+    DESTINATION_LAT = 29.452095
+    DESTINATION_LON = -98.609837
 
-print "Distance in mi: ", getDistanceMi(originLat1, originLon1, destinationLat1, destinationLon1)
+    DISTANCE_BETWEEN_POINTS_IN_KM = 1.0150
+    DISTANCE_BETWEEN_POINTS_IN_MI = 0.6307
 
-print "Is within range of ", theRange, "km: ", isInRange(theRange, originLat1, originLon1, destinationLat1,
-                                                         destinationLon1)
+    RANGE_IN_KM = 1.0151
 
-theRange = 1.0148
+    def test_calculation_of_distance_in_km(self):
+        calculated_distance_between_points_in_km = GeoRangeChecker.get_distance_in_km(
+            self.ORIGIN_LAT, self.ORIGIN_LON, self.DESTINATION_LAT, self.DESTINATION_LON)
+        self.assertEquals(calculated_distance_between_points_in_km, self.DISTANCE_BETWEEN_POINTS_IN_KM)
 
-print "Is within range of ", theRange, "km: ", isInRange(theRange, originLat1, originLon1, destinationLat1,
-                                                         destinationLon1)
+    def test_calculation_of_distance_in_mi(self):
+        calculated_distance_between_points_in_mi = GeoRangeChecker.get_distance_in_mi(
+            self.ORIGIN_LAT, self.ORIGIN_LON, self.DESTINATION_LAT, self.DESTINATION_LON)
+        self.assertEquals(calculated_distance_between_points_in_mi, self.DISTANCE_BETWEEN_POINTS_IN_MI)
+
+    def test_is_in_range(self):
+        destination_points_are_within_range = GeoRangeChecker.is_in_range(
+            self.RANGE_IN_KM, self.ORIGIN_LAT, self.ORIGIN_LON, self.DESTINATION_LAT, self.DESTINATION_LON)
+        self.assertTrue(destination_points_are_within_range)
