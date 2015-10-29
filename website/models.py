@@ -8,6 +8,9 @@ class Group(models.Model):
     )
     name = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.name
+
 
 class Notification(models.Model):
     user = models.ForeignKey(
@@ -23,6 +26,9 @@ class Notification(models.Model):
     date = models.DateField()
     time = models.TimeField()
 
+    def __str__(self):
+        return self.title
+
 
 class NotificationZone(models.Model):
     user = models.ForeignKey(
@@ -37,3 +43,6 @@ class NotificationZone(models.Model):
     state = models.CharField(max_length=64)
     zipcode = models.CharField(max_length=64)
     radius = models.DecimalField(max_digits=9, decimal_places=2)
+
+    def __str__(self):
+        return self.name
