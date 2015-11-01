@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from website.util.georangechecker import GeoRangeChecker
+from website.util.geo_range_checker import GeoRangeChecker
 
 
 class GeoRangeCheckerTest(TestCase):
