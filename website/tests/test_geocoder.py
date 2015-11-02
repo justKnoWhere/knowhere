@@ -9,8 +9,8 @@ class GeoCoderTest(TestCase):
 
     def test_address_to_coordinates(self):
         calculated_coordinates = GeoCoder.get_coordinates_from_address(self.ADDRESS)
-        self.assertEquals(calculated_coordinates, self.COORDINATES)
+        self.assertEquals(str(calculated_coordinates), self.COORDINATES)
 
     def test_coordinates_to_address(self):
         calculated_address = GeoCoder.get_address_from_coordinates(self.COORDINATES)
-        self.assertEquals(calculated_address, self.ADDRESS)
+        self.assertEquals(str(calculated_address), self.ADDRESS)

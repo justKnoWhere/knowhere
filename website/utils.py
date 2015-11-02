@@ -56,7 +56,7 @@ class GeoCoder(object):
     @classmethod
     def get_coordinates_from_address(cls, address):
         location = cls.geolocator.geocode(address)
-        return str(Coordinates(location.latitude, location.longitude))
+        return Coordinates(location.latitude, location.longitude)
 
     @classmethod
     def get_address_from_coordinates(cls, coordinates):
@@ -76,4 +76,4 @@ class GeoCoder(object):
         print(state)
         print(zip_code)
 
-        return str(Address(street, city, state, zip_code))
+        return Address(street, city, state, zip_code)

@@ -11,7 +11,7 @@ class NotificationZoneForm(ModelForm):
 
     class Meta:
         model = NotificationZone
-        exclude = ['user']
+        exclude = ['user', 'latitude', 'longitude']
 
 
 class GroupForm(ModelForm):
