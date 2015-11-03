@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from website.utils import Address
 
 
 class Group(models.Model):
@@ -28,6 +29,9 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_formatted_address(self):
+        return str(Address(self.address, self.city, self.state, self.zipcode))
 
 
 class NotificationZone(models.Model):
