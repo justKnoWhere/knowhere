@@ -70,9 +70,19 @@ def notification_new(request):
     if request.method == "POST":
         form = NotificationForm(request.POST)
         if form.is_valid():
+            coordinates = GeoCoder.get_coordinates_from_address(
+                Address(form.cleaned_data["address"],
+                        form.cleaned_data["city"],
+                        form.cleaned_data["state"],
+                        form.cleaned_data["zipcode"]
+                        )
+            )
             notification = form.save(commit=False)
-            notification.user = request.user;
+            notification.user = request.user
+            notification.latitude = str(coordinates.latitude)
+            notification.longitude = str(coordinates.longitude)
             notification.save()
+            notification.notify()
             return redirect('website.views.notification_detail', pk=notification.pk)
     else:
         form = NotificationForm()
