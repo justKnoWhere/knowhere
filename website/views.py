@@ -89,6 +89,16 @@ def notifications_current(request):
     return render(request, 'website/notifications.html', {'notifications': notifications})
 
 
+def notifications_past(request):
+    now = datetime.datetime.now()
+    notifications = Notification.objects.filter(
+                                            user=request.user
+                                        ).filter(
+                                            Q(date=now.date(),time__lte=now.time())|Q(date__lt=now.date())
+                                        ).order_by('-date')
+    return render(request, 'website/notifications.html', {'notifications': notifications})
+
+
 def user_profile(request, username):
     user = User.objects.get(username=username)
     return render(request, 'website/user_profile.html', {'user': user})
