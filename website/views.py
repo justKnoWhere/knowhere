@@ -1,9 +1,14 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.template import RequestContext, loader
 from website.forms import NotificationZoneForm, GroupForm, NotificationForm
 from website.models import NotificationZone, Group, Notification
 from website.utils import GeoCoder, Address
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+import datetime
+
+User = get_user_model()
 
 
 def index(request):
@@ -72,3 +77,18 @@ def notification_new(request):
 def notification_detail(request, pk):
     notification = get_object_or_404(Notification, pk=pk)
     return render(request, 'website/notification_detail.html', {'notification': notification})
+
+
+def notifications_current(request):
+    now = datetime.datetime.now()
+    notifications = Notification.objects.filter(
+                                            user=request.user
+                                        ).filter(
+                                            Q(date=now.date(),time__gte=now.time())|Q(date__gt=now.date())
+                                        ).order_by('-date')
+    return render(request, 'website/notifications.html', {'notifications': notifications})
+
+
+def user_profile(request, username):
+    user = User.objects.get(username=username)
+    return render(request, 'website/user_profile.html', {'user': user})

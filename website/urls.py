@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^group/(?P<pk>[0-9]+)/$', views.group_detail, name='group_detail'),
     url(r'^notification/new/$', views.notification_new, name='notification_new'),
     url(r'^notification/(?P<pk>[0-9]+)/$', views.notification_detail, name='notification_detail'),
+    url(r'^notifications/current/$', views.notifications_current, name='notifications_current'),
+    url(r'^user/(?P<username>\w+)/$', views.user_profile, name='user_profile'),
 ]
