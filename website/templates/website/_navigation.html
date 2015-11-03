@@ -14,17 +14,19 @@
         <li class="active"><a href="{% url 'index' %}">Home</a></li>
         {% if request.user.is_authenticated %}
         <li>
-            <a href="{% url 'notification_zone_new' %}">Add Notification Zone</a>
+            <a href="{% url 'notification_new' %}">Create Notification</a>
         </li>
         <li>
             <a href="{% url 'group_new' %}">Add Group</a>
         </li>
+        <li>
+            <a href="{% url 'notification_zones' %}">My Zones</a>
+        </li>
         <li class="dropdown open">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Notifications<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">My Notifications<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="{% url 'notification_new' %}">Create Notification</a></li>
-              <li><a href="{% url 'notifications_current' %}">Current Notifications</a></li>
-              <li><a href="{% url 'notifications_past' %}">Past Notifications</a></li>
+              <li><a href="{% url 'notifications_current' %}">Current</a></li>
+              <li><a href="{% url 'notifications_past' %}">Past</a></li>
             </ul>
         </li>
         <li>

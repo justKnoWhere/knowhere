@@ -43,6 +43,11 @@ def notification_zone_detail(request, pk):
     return render(request, 'website/notification_zone_detail.html', {'notification_zone': notification_zone})
 
 
+def notification_zones(request):
+    user_notification_zones = NotificationZone.objects.filter(user=request.user)
+    return render(request, 'website/notification_zones.html', {'notification_zones': user_notification_zones})
+
+
 def group_new(request):
     if request.method == "POST":
         form = GroupForm(request.POST)
