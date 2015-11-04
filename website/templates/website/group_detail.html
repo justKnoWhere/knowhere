@@ -4,8 +4,18 @@
 
 {% block content %}
     <h1>Group: {{ group.name }}</h1>
-    <div>detail will be here</div>
+    <div>
+        <ul>
+            {% for user in group.users.all %}
+            <li>
+                {{ user }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
     <br><br>
-    <div>Click to be removed from the group.</div>
-    <input type="submit" value="Remove"/>
+    <div>Click to be removed from the group.
+    <form action="{% url 'group_removal' group.id %}">
+        <input type="submit" value="Remove"/></div>
+    </form>
 {% endblock %}
