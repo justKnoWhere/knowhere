@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.template import RequestContext, loader
-from website.forms import NotificationZoneForm, GroupForm, NotificationForm
+from website.forms import NotificationZoneForm, GroupForm, GroupRemovalForm, NotificationForm
 from website.models import NotificationZone, Group, Notification
 from website.utils import GeoCoder, Address
 from django.contrib.auth import get_user_model
@@ -60,10 +60,27 @@ def group_new(request):
         form = GroupForm()
     return render(request, 'website/group_edit.html', {'form': form})
 
-
 def group_detail(request, pk):
     group = get_object_or_404(Group, pk=pk)
     return render(request, 'website/group_detail.html', {'group': group})
+
+def group_removal(request, pk):
+    if pk != 0:
+        group = get_object_or_404(Group, pk=pk)
+        Group.objects.filter(users=request.user).filter(pk=pk).delete()
+        return redirect('website.views.groups_my_list')
+    else:
+        group = get_object_or_404(Group, pk=pk)
+        form = GroupRemovalForm()
+    return render('website.views.groups_list')
+
+def groups_my_list(request):
+    groups = Group.objects.filter(users=request.user).order_by('-id')
+    return render(request, 'website/groups.html', {'groups': groups})
+
+def groups_all_list(request):
+    groups = Group.objects.order_by('-id')
+    return render(request, 'website/groups.html', {'groups': groups})
 
 
 def notification_new(request):

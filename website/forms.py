@@ -22,6 +22,16 @@ class GroupForm(ModelForm):
         model = Group
         exclude = ['users']
 
+class GroupRemovalForm(ModelForm):
+    helper = FormHelper()
+    helper.form_method = 'post'
+    helper.form_action = 'group_removal'
+    helper.add_input(Submit('submit', 'Remove'))
+
+    class Meta:
+        model = Group
+        exclude = ['users']
+
 
 class NotificationForm(ModelForm):
     helper = FormHelper()
