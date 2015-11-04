@@ -4,5 +4,20 @@
 
 {% block content %}
     <h1>Notification: {{ notification.title }}</h1>
-    <div>detail will be here</div>
+    <div>
+        <label>Group(s)</label>
+        <ul>
+        {% for group in notification.groups.all %}
+            <li>
+                {{ group }}
+            </li>
+        {% endfor %}
+        </ul>
+        <label>Address: {{ notification.address }}</label><br>
+        <label>City: {{ notification.city }}</label><br>
+        <label>State: {{ notification.state }} </label><br>
+        <label>Zipcode: {{ notification.zipcode }}</label><br>
+        <label>Date: {{ notification.date }}</label><br>
+        <label>Time: {{ notification.time }}</label><br>
+    </div>
 {% endblock %}
