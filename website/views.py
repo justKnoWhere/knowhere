@@ -77,11 +77,17 @@ def notification_new(request):
                         form.cleaned_data["zipcode"]
                         )
             )
+            print("Form: %s", form.cleaned_data)
             notification = form.save(commit=False)
-            notification.user = request.user
             notification.latitude = str(coordinates.latitude)
             notification.longitude = str(coordinates.longitude)
+            notification.user = request.user
             notification.save()
+
+            for group in form.cleaned_data['groups']:
+                notification.groups.add(group)
+            notification.save()
+
             notification.notify()
             return redirect('website.views.notification_detail', pk=notification.pk)
     else:
