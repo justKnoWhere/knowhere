@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from website.utils import Address, GeoRangeChecker
-from django.core.mail import send_mail
+from django.core.mail import send_mass_mail
 
 
 class Group(models.Model):
@@ -50,12 +50,11 @@ class Notification(models.Model):
                     )
                     if is_in_range:
                         user_email_addresses_to_notify.append(user.email)
-        print("email addresses")
-        print(user_email_addresses_to_notify)
-        send_mail(
-            'Notification', 'Here is the message.', 'notify@knowhere.com',
-            user_email_addresses_to_notify, fail_silently=False
-        )
+        messages = []
+        for email_address in user_email_addresses_to_notify:
+            message = ('Notification', 'Here is the message', 'notify@knowhere.com', [email_address])
+            messages.append(message)
+        send_mass_mail(messages, fail_silently=False)
 
 
 class NotificationZone(models.Model):

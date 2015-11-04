@@ -1,6 +1,7 @@
 from django.test import TestCase
 from website.models import Group, Notification, NotificationZone
 from django.contrib.auth import get_user_model
+from django.core import mail
 
 User = get_user_model()
 
@@ -32,44 +33,99 @@ class GroupTest(TestCase):
 
 
 class NotificationTest(TestCase):
-    USERNAME = "notificationUser"
-    TITLE = "My Notification"
+    USERNAME_1 = "notificationUser1"
+    EMAIL_ADDRESS_1 = "notificationUser1@bobmail.info"
+    USERNAME_2 = "notificationUser2"
+    EMAIL_ADDRESS_2 = "notificationUser2@bobmail.info"
+
     GROUP_NAME_1 = "My Group 1"
     GROUP_NAME_2 = "My Group 2"
-    ADDRESS = "123 Main St."
+
+    ZONE_NAME_1 = "My Notification Zone 1"
+    ZONE_NAME_2 = "My Notification Zone 2"
+    RADIUS = "1.0"
+
+    TITLE = "My Notification"
+    ADDRESS = "6220 Culebra Rd"
     CITY = "San Antonio"
     STATE = "TX"
-    ZIPCODE = "12345"
+    ZIPCODE = "78238"
     DATE = "1970-01-01"
     TIME = "12:00 AM"
+    LATITUDE = 29.4522704
+    LONGITUDE = -98.6101913
 
     notification = Notification()
+    group_1 = Group()
+    group_2 = Group()
+    user_1 = User()
+    user_2 = User()
 
     def test_notification_creation(self):
-        self.given_the_notification_is_created()
+        self.given_groups_with_users()
+        self.when_the_notification_is_created()
         self.then_the_notification_has_expected_values()
 
-    def given_the_notification_is_created(self):
-        user = User.objects.create(username=self.USERNAME)
-        group1 = Group.objects.create(name=self.GROUP_NAME_1)
-        group2 = Group.objects.create(name=self.GROUP_NAME_2)
+    def test_notify(self):
+        self.given_groups_with_users()
+        self.when_the_notification_is_created()
+        self.when_the_notification_is_sent()
+        self.then_the_notifications_are_sent()
 
+    def given_users(self):
+        self.user_1 = User.objects.create(username=self.USERNAME_1, password="password", email=self.EMAIL_ADDRESS_1)
+        self.user_2 = User.objects.create(username=self.USERNAME_2, password="password", email=self.EMAIL_ADDRESS_2)
+        NotificationZone.objects.create(
+            user=self.user_1,
+            name=self.ZONE_NAME_1,
+            address=self.ADDRESS,
+            city=self.CITY,
+            state=self.STATE,
+            zipcode=self.ZIPCODE,
+            latitude=self.LATITUDE,
+            longitude=self.LONGITUDE,
+            radius=self.RADIUS
+        )
+        NotificationZone.objects.create(
+            user=self.user_2,
+            name=self.ZONE_NAME_2,
+            address=self.ADDRESS,
+            city=self.CITY,
+            state=self.STATE,
+            zipcode=self.ZIPCODE,
+            latitude=self.LATITUDE,
+            longitude=self.LONGITUDE,
+            radius=self.RADIUS
+        )
+
+    def given_groups_with_users(self):
+        self.given_users()
+        self.group_1 = Group.objects.create(name=self.GROUP_NAME_1)
+        self.group_2 = Group.objects.create(name=self.GROUP_NAME_2)
+        self.group_1.users.add(self.user_1, self.user_2)
+
+    def when_the_notification_is_created(self):
         self.notification = Notification.objects.create(
-            user=user,
+            user=self.user_1,
             title=self.TITLE,
             address=self.ADDRESS,
             city=self.CITY,
             state=self.STATE,
             zipcode=self.ZIPCODE,
             date=self.DATE,
-            time=self.TIME
+            time=self.TIME,
+            latitude=self.LATITUDE,
+            longitude=self.LONGITUDE
         )
-        self.notification.groups.add(group1, group2)
+        self.notification.groups.add(self.group_1, self.group_2)
+
+    def when_the_notification_is_sent(self):
+        self.notification.notify()
 
     def then_the_notification_has_expected_values(self):
         notification_groups = self.notification.groups.all()
         self.assertTrue(isinstance(self.notification, Notification))
-        self.assertEqual(self.notification.user.username, self.USERNAME)
+        self.assertEqual(self.notification.user.username, self.USERNAME_1)
         self.assertEqual(notification_groups[0].name, self.GROUP_NAME_1)
         self.assertEqual(notification_groups[1].name, self.GROUP_NAME_2)
         self.assertEqual(self.notification.title, self.TITLE)
@@ -79,6 +135,13 @@ class NotificationTest(TestCase):
         self.assertEqual(self.notification.zipcode, self.ZIPCODE)
         self.assertEqual(self.notification.date, self.DATE)
         self.assertEqual(self.notification.time, self.TIME)
+
+    def then_the_notifications_are_sent(self):
+        self.assertEqual(len(mail.outbox), 2)
+
+        # Verify that the subject of the first message is correct.
+        self.assertEqual(mail.outbox[0].to[0], self.user_1.email)
+        self.assertEqual(mail.outbox[1].to[0], self.user_2.email)
 
 
 class NotificationZoneTest(TestCase):
