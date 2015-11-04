@@ -29,4 +29,4 @@ class NotificationForm(ModelForm):
 
     class Meta:
         model = Notification
-        exclude = ['user']
+        exclude = ['user', 'latitude', 'longitude']

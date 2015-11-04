@@ -62,18 +62,11 @@ class GeoCoder(object):
     def get_address_from_coordinates(cls, coordinates):
         location = cls.geolocator.reverse(str(coordinates), True)
         address = location.address
-        print(address)
         split_address = str.split(address, ',')
         street = split_address[0].strip()
         city = split_address[1].strip()
         state_and_zip_code = split_address[2].strip().split()
         state = state_and_zip_code[0]
         zip_code = state_and_zip_code[1]
-
-        print(split_address)
-        print(street)
-        print(city)
-        print(state)
-        print(zip_code)
 
         return Address(street, city, state, zip_code)
