@@ -1,0 +1,21 @@
+{% extends "website/__base.html" %}
+
+{% block content %}
+    <div class="row">
+        <table class="table">
+            <thead>
+                <th>Group Name</th>
+            </thead>
+        {% for group in groups %}
+            <tr>
+                <td>
+                    <a href="{% url 'group_detail' group.id %}">{{ group.name }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'group_removal' group.id %}">REMOVE</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+{% endblock %}
