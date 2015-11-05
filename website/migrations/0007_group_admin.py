@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='group',
             name='admin',
-            field=models.ForeignKey(related_name='admin', to=settings.AUTH_USER_MODEL, default=0),
+            field=models.ForeignKey(related_name='admin', to=settings.AUTH_USER_MODEL, default=None),
             preserve_default=False,
         ),
     ]
