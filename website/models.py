@@ -6,7 +6,8 @@ from django.core.mail import send_mass_mail
 
 class Group(models.Model):
     admin = models.ForeignKey(
-        settings.AUTH_USER_MODEL
+        settings.AUTH_USER_MODEL,
+        related_name="admin"
     )
     users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
