@@ -53,6 +53,7 @@ def group_new(request):
         form = GroupForm(request.POST)
         if form.is_valid():
             group = form.save(commit=False)
+            group.admin = request.user
             group.save()
             group.users.add(request.user);
             return redirect('website.views.group_detail', pk=group.pk)
@@ -60,9 +61,11 @@ def group_new(request):
         form = GroupForm()
     return render(request, 'website/group_edit.html', {'form': form})
 
+
 def group_detail(request, pk):
     group = get_object_or_404(Group, pk=pk)
     return render(request, 'website/group_detail.html', {'group': group})
+
 
 def group_removal(request, pk):
     if pk != 0:
@@ -74,9 +77,11 @@ def group_removal(request, pk):
         form = GroupRemovalForm()
     return render('website.views.groups_list')
 
+
 def groups_my_list(request):
     groups = Group.objects.filter(users=request.user).order_by('-id')
     return render(request, 'website/groups.html', {'groups': groups})
+
 
 def groups_all_list(request):
     groups = Group.objects.order_by('-id')

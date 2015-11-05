@@ -20,7 +20,8 @@ class GroupForm(ModelForm):
 
     class Meta:
         model = Group
-        exclude = ['users']
+        exclude = ['admin', 'users']
+
 
 class GroupRemovalForm(ModelForm):
     helper = FormHelper()
