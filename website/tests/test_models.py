@@ -21,7 +21,7 @@ class GroupTest(TestCase):
         user1 = User.objects.create(username=self.USERNAME_1)
         user2 = User.objects.create(username=self.USERNAME_2)
 
-        self.group = Group.objects.create(name=self.NAME)
+        self.group = Group.objects.create(admin=user1, name=self.NAME)
         self.group.users.add(user1, user2)
 
     def then_the_group_has_expected_values(self):
@@ -100,8 +100,8 @@ class NotificationTest(TestCase):
 
     def given_groups_with_users(self):
         self.given_users()
-        self.group_1 = Group.objects.create(name=self.GROUP_NAME_1)
-        self.group_2 = Group.objects.create(name=self.GROUP_NAME_2)
+        self.group_1 = Group.objects.create(admin=self.user_1, name=self.GROUP_NAME_1)
+        self.group_2 = Group.objects.create(admin=self.user_1, name=self.GROUP_NAME_2)
         self.group_1.users.add(self.user_1, self.user_2)
 
     def when_the_notification_is_created(self):
@@ -165,8 +165,8 @@ class NotificationZoneTest(TestCase):
 
     def given_the_notification_is_created(self):
         user = User.objects.create(username=self.USERNAME)
-        group1 = Group.objects.create(name=self.GROUP_NAME_1)
-        group2 = Group.objects.create(name=self.GROUP_NAME_2)
+        group1 = Group.objects.create(admin=user, name=self.GROUP_NAME_1)
+        group2 = Group.objects.create(admin=user, name=self.GROUP_NAME_2)
 
         self.notification_zone = NotificationZone.objects.create(
             user=user,
