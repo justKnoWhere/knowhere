@@ -54,6 +54,12 @@ def group_adduser(request, pk):
     return render(request, 'website/group_detail.html', {'group': group})
 
 
+def group_removeuser(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    group.users.remove(request.user)
+    return render(request, 'website/group_detail.html', {'group': group})
+
+
 def group_new(request):
     if request.method == "POST":
         form = GroupForm(request.POST)

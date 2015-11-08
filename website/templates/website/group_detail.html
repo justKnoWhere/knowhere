@@ -20,9 +20,10 @@
             <input type="submit" value="Add"/></div>
             </form>
         <br><br>
-    {% endif %}
+    {% else %}
     <div>Click to be removed from the group.
-    <form action="{% url 'group_removal' group.id %}">
+    <form action="{% url 'group_removeuser' group.id %}">
         <input type="submit" value="Remove"/></div>
     </form>
+    {% endif %}
 {% endblock %}
