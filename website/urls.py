@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^notification_zones/$', views.notification_zones, name='notification_zones'),
     url(r'^group/new/$', views.group_new, name='group_new'),
     url(r'^group/(?P<pk>[0-9]+)/$', views.group_detail, name='group_detail'),
+    url(r'^group/(?P<pk>[0-9]+)/adduser$', views.group_adduser, name='group_adduser'),
     url(r'^group/(?P<pk>[0-9]+)/removal$', views.group_removal, name='group_removal'),
     url(r'^notification/new/$', views.notification_new, name='notification_new'),
     url(r'^notification/(?P<pk>[0-9]+)/$', views.notification_detail, name='notification_detail'),
