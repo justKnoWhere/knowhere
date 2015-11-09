@@ -14,6 +14,13 @@
         </ul>
     </div>
     <br><br>
+    {% if not request.user  in group.users.all %}
+        <div>Click to be added to this group.
+            <form action="{% url 'group_adduser' group.id %}">'
+            <input type="submit" value="Add"/></div>
+            </form>
+        <br><br>
+    {% endif %}
     <div>Click to be removed from the group.
     <form action="{% url 'group_removal' group.id %}">
         <input type="submit" value="Remove"/></div>

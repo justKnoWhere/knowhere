@@ -48,6 +48,12 @@ def notification_zones(request):
     return render(request, 'website/notification_zones.html', {'notification_zones': user_notification_zones})
 
 
+def group_adduser(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    group.users.add(request.user)
+    return render(request, 'website/group_detail.html', {'group': group})
+
+
 def group_new(request):
     if request.method == "POST":
         form = GroupForm(request.POST)
