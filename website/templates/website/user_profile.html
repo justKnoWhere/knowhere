@@ -4,5 +4,10 @@
 
 {% block content %}
     <h1>User: {{ user.username }}</h1>
-    <div>detail will be here</div>
+    <div>
+        <label>User Name: {{ user.username }}</label><br>
+        <label>First Name: {{ user.first_name }}</label><br>
+        <label>Last Name: {{ user.last_name }} </label><br>
+        <label>Email Address: {{ user.email }}</label><br>
+    </div>
 {% endblock %}
