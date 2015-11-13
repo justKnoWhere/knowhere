@@ -1,7 +1,6 @@
 from django.conf.urls import url
-from website.views import GroupSearchView
-
 from . import views
+from website.views import GroupSearchView
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
