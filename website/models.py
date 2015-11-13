@@ -12,10 +12,13 @@ class Group(models.Model):
     users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
     )
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64,unique=True)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return "/group/%i/" % self.id
 
 
 class Notification(models.Model):

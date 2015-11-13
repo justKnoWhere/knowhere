@@ -1,7 +1,8 @@
 from website.models import NotificationZone, Group, Notification
-from django.forms import ModelForm
+from django.forms import ModelForm, CharField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from haystack.forms import SearchForm
 
 
 class NotificationZoneForm(ModelForm):
@@ -41,3 +42,18 @@ class NotificationForm(ModelForm):
     class Meta:
         model = Notification
         exclude = ['user', 'latitude', 'longitude']
+
+
+class GroupSearchForm(SearchForm):
+    helper = FormHelper()
+    helper._form_method = 'get'
+    helper.add_input(Submit('search', 'Search'))
+
+    def search(self):
+        # First, store the SearchQuerySet received from other processing.
+        sqs = super(GroupSearchForm, self).search()
+
+        if not self.is_valid():
+            return self.no_query_found()
+
+        return sqs
