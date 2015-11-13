@@ -1,11 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.template import RequestContext, loader
-from website.forms import NotificationZoneForm, GroupForm, GroupRemovalForm, NotificationForm
+from website.forms import NotificationZoneForm, GroupForm, GroupRemovalForm, NotificationForm, GroupSearchForm
 from website.models import NotificationZone, Group, Notification
 from website.utils import GeoCoder, Address
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from haystack.generic_views import SearchView, SearchQuerySet
 import datetime
 
 User = get_user_model()
@@ -92,12 +93,8 @@ def group_removal(request, pk):
 
 def groups_my_list(request):
     groups = Group.objects.filter(users=request.user).order_by('-id')
-    return render(request, 'website/groups.html', {'groups': groups})
-
-
-def groups_all_list(request):
-    groups = Group.objects.order_by('-id')
-    return render(request, 'website/groups.html', {'groups': groups})
+    search_form = GroupSearchForm
+    return render(request, 'website/groups.html', {'groups': groups, 'search_form': search_form})
 
 
 def notification_new(request):
@@ -157,3 +154,8 @@ def notifications_past(request):
 def user_profile(request, username):
     user = User.objects.get(username=username)
     return render(request, 'website/user_profile.html', {'user': user})
+
+
+class GroupSearchView(SearchView):
+    template_name = "website/group_search.html"
+    form_class = GroupSearchForm
