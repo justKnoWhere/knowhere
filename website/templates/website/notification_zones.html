@@ -1,6 +1,42 @@
 {% extends "website/__base.html" %}
 
 {% block content %}
+
+{% load leaflet_tags %}
+
+    <script type="text/javascript">
+        function map_init_basic (map, options) {
+            var latlons = [];
+            {% for notification_zone in notification_zones %}
+                var lat = {{ notification_zone.latitude }};
+                var lon = {{ notification_zone.longitude }};
+                var radius = {{ notification_zone.radius }} * 1609.34;  //must be in meters
+                var latlon = L.latLng(lat, lon);
+                L.marker([lat, lon]).addTo(map);
+
+                var circle = L.circle([lat, lon], radius, {
+                    color: 'blue',
+                    fillColor: '#03f',
+                    fillOpacity: 0.2
+                }).addTo(map);
+                latlons.push(latlon);
+            {% endfor %}
+
+            var bounds =  new L.LatLngBounds(latlons);
+            map.fitBounds(bounds);
+
+            var zoom = map.getBoundsZoom(new L.LatLngBounds(latlons));
+            map.setZoom(zoom);
+        }
+
+
+    </script>
+
+    <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+    </head>
+
     <div class="row">
         <div class="btn-group" role="group" aria-label="...">
           <a href="{% url 'notification_zone_new' %}" class="btn btn-default">New Notification Zone</a>
@@ -19,5 +55,9 @@
             </tr>
         {% endfor %}
         </table>
+    </div>
+
+    <div>
+        {% leaflet_map "notification_map" callback="window.map_init_basic"  %}
     </div>
 {% endblock %}
