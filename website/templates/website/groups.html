@@ -15,7 +15,7 @@
                     {% if group.admin == request.user %}
                         <a href="{% url 'group_delete' group.id %}">Delete Group</a>
                     {% else %}
-                        <a href="{% url 'group_removeuser' group.id %}">Leave Group</a>
+                        <a href="{% url 'group_leave' group.id %}">Leave Group</a>
                     {% endif %}
                 </td>
             </tr>

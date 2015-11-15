@@ -1,12 +1,12 @@
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.template import RequestContext, loader
-from website.forms import NotificationZoneForm, GroupForm, GroupRemovalForm, NotificationForm, GroupSearchForm
+from website.forms import NotificationZoneForm, GroupForm, NotificationForm, GroupSearchForm
 from website.models import NotificationZone, Group, Notification
 from website.utils import GeoCoder, Address
 from django.contrib.auth import get_user_model
 from django.db.models import Q
-from haystack.generic_views import SearchView, SearchQuerySet
+from haystack.generic_views import SearchView
 import datetime
 
 User = get_user_model()
@@ -59,16 +59,16 @@ def notification_zones(request):
     return render(request, 'website/notification_zones.html', {'notification_zones': user_notification_zones})
 
 
-def group_adduser(request, pk):
+def group_join(request, pk):
     group = get_object_or_404(Group, pk=pk)
     group.users.add(request.user)
-    return render(request, 'website/group_detail.html', {'group': group})
+    return redirect('group_detail', pk)
 
 
-def group_removeuser(request, pk):
+def group_leave(request, pk):
     group = get_object_or_404(Group, pk=pk)
     group.users.remove(request.user)
-    return render(request, 'website/group_detail.html', {'group': group})
+    return redirect('group_detail', pk)
 
 
 def group_new(request):
@@ -87,7 +87,8 @@ def group_new(request):
 
 def group_detail(request, pk):
     group = get_object_or_404(Group, pk=pk)
-    return render(request, 'website/group_detail.html', {'group': group})
+    group_is_public = group.type == Group.PUBLIC
+    return render(request, 'website/group_detail.html', {'group': group, 'group_is_public': group_is_public})
 
 
 @group_admin_required
