@@ -5,6 +5,11 @@ from django.core.mail import send_mass_mail
 
 
 class Group(models.Model):
+    PRIVACY_CHOICES = (
+        ('public', 'Public'),
+        ('private', 'Private'),
+        ('secret', 'Secret'),
+    )
     admin = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="admin"
@@ -13,6 +18,11 @@ class Group(models.Model):
         settings.AUTH_USER_MODEL,
     )
     name = models.CharField(max_length=64,unique=True)
+    type = models.CharField(
+        max_length=7,
+        choices=PRIVACY_CHOICES,
+        default="public"
+    )
 
     def __str__(self):
         return self.name
