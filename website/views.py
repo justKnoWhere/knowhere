@@ -87,7 +87,7 @@ def group_new(request):
 
 def group_detail(request, pk):
     group = get_object_or_404(Group, pk=pk)
-    return render(request, 'website/group_detail.html', {'group': group, 'is_admin': is_admin})
+    return render(request, 'website/group_detail.html', {'group': group})
 
 
 @group_admin_required
