@@ -28,7 +28,6 @@
     </script>
 
     <head>
-        ...
         {% leaflet_js %}
         {% leaflet_css %}
     </head>
@@ -43,6 +42,7 @@
             <div><span><strong>City:</strong> </span><span>{{ notification_zone.city }}</span></div>
             <div><span><strong>State: </strong></span><span>{{ notification_zone.state }}</span></div>
             <div><span><strong>Zip Code: </strong></span><span>{{ notification_zone.zipcode }}</span></div>
+            <a href="https://www.google.com/maps/place/{{notification_zone.address}},{{notification_zone.city}},{{notification_zone.state}},{{notification_zone.zipcode}}," target="_blank">Click here to open in Google Maps</a>
     </div>
 
     <div>
