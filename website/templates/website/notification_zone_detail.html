@@ -4,5 +4,14 @@
 
 {% block content %}
     <h1>Notification Zone: {{ notification_zone.name }}</h1>
-    <div>detail will be here</div>
+    <div>
+            <div><span><strong>Groups: </strong></span><span>{% for group in notification_zone.groups.all %} {{ group }} {% endfor %}</span></div>
+            <div><span><strong>Latitude: </strong></span><span>{{ notification_zone.latitude }}</span></div>
+            <div><span><strong>Longitude: </strong></span><span>{{ notification_zone.longitude }}</span></div>
+            <div><span><strong>Radius: </strong></span><span>{{ notification_zone.radius }}</span></div>
+            <div><span><strong>Address: </strong></span><span>{{ notification_zone.address }}</span></div>
+            <div><span><strong>City:</strong> </span><span>{{ notification_zone.city }}</span></div>
+            <div><span><strong>State: </strong></span><span>{{ notification_zone.state }}</span></div>
+            <div><span><strong>Zip Code: </strong></span><span>{{ notification_zone.zipcode }}</span></div>
+    </div>
 {% endblock %}

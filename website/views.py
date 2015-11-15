@@ -43,6 +43,8 @@ def notification_zone_new(request):
             notification_zone.latitude = str(coordinates.latitude)
             notification_zone.longitude = str(coordinates.longitude)
             notification_zone.save()
+            for group in form.cleaned_data["groups"]:
+                notification_zone.groups.add(group)
             return redirect('website.views.notification_zone_detail', pk=notification_zone.pk)
     else:
         form = NotificationZoneForm(request.user)
