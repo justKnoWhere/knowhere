@@ -76,8 +76,11 @@ class Notification(models.Model):
                         users_to_notify.append(user)
         messages = []
         for user in users_to_notify:
-            message = ('Notification', 'Here is the message', 'Notify <notify@knowhere.com>',
-                       ["Recipient <%s>" % user.first_name, user.email])
+            body = "Hey! {0} wanted you to know about something happening on {1} at {2}".format(self.user.username, self.date, self.time)
+            message = ('KnoWhere: %s' % self.title,
+                       body,
+                       'notify@knowhere.com',
+                       ["%s" % user.email])
             messages.append(message)
         send_mass_mail(messages, fail_silently=False)
 
