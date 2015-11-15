@@ -4,6 +4,7 @@
 
 {% block content %}
     <h1>Group: {{ group.name }}</h1>
+    <h2>Type: {{ group.type }}</h2>
     <div>
         <ul>
             {% for user in group.users.all %}
