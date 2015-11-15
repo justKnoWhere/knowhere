@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'crispy_forms',
     'haystack',
+    'leaflet'
 )
 
 SITE_ID = 2
@@ -137,3 +138,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (39.833333, -98.583333),
+    'DEFAULT_ZOOM': 4,
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 18,
+}
