@@ -47,6 +47,10 @@ class NotificationForm(ModelForm):
         model = Notification
         exclude = ['user', 'latitude', 'longitude']
 
+    def __init__(self, user, *args, **kwargs):
+        super(NotificationForm, self).__init__(*args, **kwargs)
+        self.fields['groups'] = ModelMultipleChoiceField(queryset=Group.objects.filter(users__id=user.id))
+
 
 class GroupSearchForm(SearchForm):
     helper = FormHelper()

@@ -104,7 +104,7 @@ def groups_my_list(request):
 
 def notification_new(request):
     if request.method == "POST":
-        form = NotificationForm(request.POST)
+        form = NotificationForm(request.user, request.POST)
         if form.is_valid():
             coordinates = GeoCoder.get_coordinates_from_address(
                 Address(form.cleaned_data["address"],
@@ -113,7 +113,6 @@ def notification_new(request):
                         form.cleaned_data["zipcode"]
                         )
             )
-            print("Form: %s", form.cleaned_data)
             notification = form.save(commit=False)
             notification.latitude = str(coordinates.latitude)
             notification.longitude = str(coordinates.longitude)
@@ -127,7 +126,7 @@ def notification_new(request):
             notification.notify()
             return redirect('website.views.notification_detail', pk=notification.pk)
     else:
-        form = NotificationForm()
+        form = NotificationForm(request.user)
     return render(request, 'website/notification_edit.html', {'form': form})
 
 

@@ -61,12 +61,9 @@ class Notification(models.Model):
         return str(Address(self.address, self.city, self.state, self.zipcode))
 
     def notify(self):
-        user_email_addresses_to_notify = []
-        print("Got here: %s" % self)
+        users_to_notify = []
         for group in self.groups.all():
-            print("Group to notify: %s" % group)
             for user in group.users.all():
-                print("User to notify: %s" % user)
                 for notification_zone in NotificationZone.objects.filter(user=user):
                     is_in_range = GeoRangeChecker.is_in_range_mi(
                         notification_zone.radius,
@@ -76,11 +73,11 @@ class Notification(models.Model):
                         self.longitude
                     )
                     if is_in_range:
-                        user_email_addresses_to_notify.append(user.email)
+                        users_to_notify.append(user)
         messages = []
-        print("Emails to notify: %s" % user_email_addresses_to_notify)
-        for email_address in user_email_addresses_to_notify:
-            message = ('Notification', 'Here is the message', 'notify@knowhere.com', [email_address])
+        for user in users_to_notify:
+            message = ('Notification', 'Here is the message', 'Notify <notify@knowhere.com>',
+                       ["Recipient <%s>" % user.first_name, user.email])
             messages.append(message)
         send_mass_mail(messages, fail_silently=False)
 
