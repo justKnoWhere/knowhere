@@ -58,7 +58,12 @@ INSTALLED_APPS = (
 SITE_ID = 2
 LOGIN_REDIRECT_URL = '/'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = 'postmaster@sandbox6ba6e003bdf94e94b96c7d5eec431d88.mailgun.org'
+EMAIL_HOST_PASSWORD = '8988886099d0437f53aa444421708abf'
+EMAIL_PORT = 587
 
 HAYSTACK_CONNECTIONS = {
     'default': {
