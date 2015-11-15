@@ -55,7 +55,7 @@ INSTALLED_APPS = (
     'haystack',
 )
 
-SITE_ID = 1
+SITE_ID = 2
 LOGIN_REDIRECT_URL = '/'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
