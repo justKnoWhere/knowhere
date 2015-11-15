@@ -29,7 +29,7 @@ def index(request):
 
 def notification_zone_new(request):
     if request.method == "POST":
-        form = NotificationZoneForm(request.POST)
+        form = NotificationZoneForm(request.user, request.POST)
         if form.is_valid():
             coordinates = GeoCoder.get_coordinates_from_address(
                 Address(form.cleaned_data["address"],
@@ -45,7 +45,7 @@ def notification_zone_new(request):
             notification_zone.save()
             return redirect('website.views.notification_zone_detail', pk=notification_zone.pk)
     else:
-        form = NotificationZoneForm()
+        form = NotificationZoneForm(request.user)
     return render(request, 'website/notification_zone_edit.html', {'form': form})
 
 

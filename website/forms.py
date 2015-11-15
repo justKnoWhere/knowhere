@@ -1,5 +1,5 @@
 from website.models import NotificationZone, Group, Notification
-from django.forms import ModelForm, CharField
+from django.forms import ModelForm, ModelMultipleChoiceField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from haystack.forms import SearchForm
@@ -13,6 +13,10 @@ class NotificationZoneForm(ModelForm):
     class Meta:
         model = NotificationZone
         exclude = ['user', 'latitude', 'longitude']
+
+    def __init__(self, user, *args, **kwargs):
+        super(NotificationZoneForm, self).__init__(*args, **kwargs)
+        self.fields['groups'] = ModelMultipleChoiceField(queryset=Group.objects.filter(users__id=user.id))
 
 
 class GroupForm(ModelForm):
