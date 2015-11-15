@@ -27,7 +27,7 @@ class GroupForm(ModelForm):
 class GroupRemovalForm(ModelForm):
     helper = FormHelper()
     helper.form_method = 'post'
-    helper.form_action = 'group_removal'
+    helper.form_action = 'group_delete'
     helper.add_input(Submit('submit', 'Remove'))
 
     class Meta:

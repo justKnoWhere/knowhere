@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.template import RequestContext, loader
 from website.forms import NotificationZoneForm, GroupForm, GroupRemovalForm, NotificationForm, GroupSearchForm
@@ -10,6 +10,16 @@ from haystack.generic_views import SearchView, SearchQuerySet
 import datetime
 
 User = get_user_model()
+
+
+def group_admin_required(view_function):
+    def _wrapped_view_function(request, pk):
+        group = get_object_or_404(Group, pk=pk)
+        if group.admin == request.user:
+            return view_function(group)
+        else:
+            return HttpResponseForbidden('<h1>Only the group admin can access this command</h1>')
+    return _wrapped_view_function
 
 
 def index(request):
@@ -77,24 +87,18 @@ def group_new(request):
 
 def group_detail(request, pk):
     group = get_object_or_404(Group, pk=pk)
-    return render(request, 'website/group_detail.html', {'group': group})
+    return render(request, 'website/group_detail.html', {'group': group, 'is_admin': is_admin})
 
 
-def group_removal(request, pk):
-    if pk != 0:
-        group = get_object_or_404(Group, pk=pk)
-        Group.objects.filter(users=request.user).filter(pk=pk).delete()
-        return redirect('website.views.groups_my_list')
-    else:
-        group = get_object_or_404(Group, pk=pk)
-        form = GroupRemovalForm()
-    return render('website.views.groups_list')
+@group_admin_required
+def group_delete(group):
+    group.delete()
+    return redirect('groups_my_list')
 
 
 def groups_my_list(request):
     groups = Group.objects.filter(users=request.user).order_by('-id')
-    search_form = GroupSearchForm
-    return render(request, 'website/groups.html', {'groups': groups, 'search_form': search_form})
+    return render(request, 'website/groups.html', {'groups': groups})
 
 
 def notification_new(request):

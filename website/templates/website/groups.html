@@ -12,7 +12,11 @@
                     <a href="{% url 'group_detail' group.id %}">{{ group.name }}</a>
                 </td>
                 <td>
-                    <a href="{% url 'group_removal' group.id %}">REMOVE</a>
+                    {% if group.admin == request.user %}
+                        <a href="{% url 'group_delete' group.id %}">Delete Group</a>
+                    {% else %}
+                        <a href="{% url 'group_removeuser' group.id %}">Leave Group</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
