@@ -3,6 +3,36 @@
 {% block title %}Notification Zone{% endblock %}
 
 {% block content %}
+
+{% load leaflet_tags %}
+
+    <script type="text/javascript">
+        function map_init_basic (map, options) {
+            var lat = {{ notification_zone.latitude }};
+            var lon = {{ notification_zone.longitude }};
+            var radius = {{ notification_zone.radius }} * 1609.34;  //must be in meters
+            var latlon = L.latLng(lat, lon);
+            L.marker([lat, lon]).addTo(map);
+            map.panTo(latlon);
+
+            var circle = L.circle([lat, lon], radius, {
+                color: 'green',
+                fillColor: '#03f',
+                fillOpacity: 0.2
+            }).addTo(map);
+
+            map.fitBounds(circle.getBounds());
+        }
+
+
+    </script>
+
+    <head>
+        ...
+        {% leaflet_js %}
+        {% leaflet_css %}
+    </head>
+
     <h1>Notification Zone: {{ notification_zone.name }}</h1>
     <div>
             <div><span><strong>Groups: </strong></span><span>{% for group in notification_zone.groups.all %} {{ group }} {% endfor %}</span></div>
@@ -14,4 +44,9 @@
             <div><span><strong>State: </strong></span><span>{{ notification_zone.state }}</span></div>
             <div><span><strong>Zip Code: </strong></span><span>{{ notification_zone.zipcode }}</span></div>
     </div>
+
+    <div>
+        {% leaflet_map "notification_map" callback="window.map_init_basic"  %}
+    </div>
+
 {% endblock %}

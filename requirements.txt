@@ -8,3 +8,4 @@ django-crispy-forms == 1.5.2
 geopy == 1.11.0
 django-haystack == 2.4.1
 Whoosh == 2.7.0
+django-leaflet == 0.16.0
