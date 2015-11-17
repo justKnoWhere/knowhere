@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, HTML
 from haystack.forms import SearchForm
 from django import forms
-from allauth.account.forms import LoginForm
+from allauth.account.forms import LoginForm, SignupForm
 
 
 
@@ -77,4 +77,13 @@ class KnoWhereLoginForm(LoginForm):
 
         helper = FormHelper()
         helper.add_input(Submit('submit', 'Login'))
+        self.helper = helper
+
+
+class KnoWhereSignupForm(SignupForm):
+    def __init__(self, *args, **kwargs):
+        super(KnoWhereSignupForm, self).__init__(*args, **kwargs)
+
+        helper = FormHelper()
+        helper.add_input(Submit('submit', 'Sign up'))
         self.helper = helper
