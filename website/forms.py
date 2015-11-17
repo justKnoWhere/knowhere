@@ -1,8 +1,11 @@
 from website.models import NotificationZone, Group, Notification
 from django.forms import ModelForm, ModelMultipleChoiceField
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Layout, HTML
 from haystack.forms import SearchForm
+from django import forms
+from allauth.account.forms import LoginForm
+
 
 
 class NotificationZoneForm(ModelForm):
@@ -65,3 +68,13 @@ class GroupSearchForm(SearchForm):
             return self.no_query_found()
 
         return sqs
+
+
+class KnoWhereLoginForm(LoginForm):
+    def __init__(self, *args, **kwargs):
+        super(KnoWhereLoginForm, self).__init__(*args, **kwargs)
+        self.fields['password'].widget = forms.PasswordInput()
+
+        helper = FormHelper()
+        helper.add_input(Submit('submit', 'Login'))
+        self.helper = helper

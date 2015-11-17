@@ -59,6 +59,7 @@ INSTALLED_APPS = (
 SITE_ID = 2
 LOGIN_REDIRECT_URL = '/'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+ACCOUNT_FORMS = {'login': 'website.forms.KnoWhereLoginForm'}
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailgun.org'
