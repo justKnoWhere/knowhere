@@ -4,6 +4,11 @@
 
 {% block content %}
     <div class="row">
-        Am I logged in? {{ request.user.is_authenticated }}
+        Welcome to KnoWhere. To get started
+        {% if request.user.is_authenticated %}
+            Create or join a group, set your notification zones, and start knowing!
+        {% else %}
+            log in or sign up
+        {% endif %}
     </div>
 {% endblock %}
