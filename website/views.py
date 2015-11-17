@@ -104,7 +104,7 @@ def groups_my_list(request):
     return render(request, 'website/groups.html', {'groups': groups})
 
 
-def notification_new(request, pk=None):
+def notification_new_or_edit(request, pk=None):
     template = "website/notification_{0}.html"
     if pk:
         template = str.format(template, "edit")
