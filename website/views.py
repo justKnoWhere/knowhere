@@ -104,9 +104,19 @@ def groups_my_list(request):
     return render(request, 'website/groups.html', {'groups': groups})
 
 
-def notification_new(request):
+def notification_new(request, pk=None):
+    template = "website/notification_{0}.html"
+    if pk:
+        template = str.format(template, "edit")
+        notification = get_object_or_404(Notification, pk=pk)
+        if notification.user != request.user:
+            return HttpResponseForbidden()
+    else:
+        template = str.format(template, "new")
+        notification = Notification(user=request.user)
+
     if request.method == "POST":
-        form = NotificationForm(request.user, request.POST)
+        form = NotificationForm(request.user, request.POST, instance=notification)
         if form.is_valid():
             coordinates = GeoCoder.get_coordinates_from_address(
                 Address(form.cleaned_data["address"],
@@ -128,8 +138,8 @@ def notification_new(request):
             notification.notify()
             return redirect('website.views.notification_detail', pk=notification.pk)
     else:
-        form = NotificationForm(request.user)
-    return render(request, 'website/notification_edit.html', {'form': form})
+        form = NotificationForm(request.user, instance=notification)
+    return render(request, template, {'form': form})
 
 
 def notification_detail(request, pk):
