@@ -1,4 +1,4 @@
-{% extends "website/__base.html" %}
+{% extends "website/__base_content.html" %}
 
 {% block content %}
 
@@ -12,7 +12,7 @@
             var iconH = 50;
 
             var markerIcon = L.icon({
-                iconUrl: '../../static/website/img/knowhere-logo.png',
+                iconUrl: '../../static/website/img/knowhere-logo-small.png',
                 iconSize:     [iconW, iconH], // size of the icon
                 iconAnchor:   [iconW/2, iconH], // point of the icon which will correspond to marker's location
                 popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor

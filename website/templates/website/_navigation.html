@@ -1,52 +1,57 @@
 <!DOCTYPE html>
-<div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{% url 'index' %}">
-        <img style="max-width:150px; margin-top: -7px; float: left;" src="/static/website/img/knowhere-text-logo.png">
-      </a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="{% url 'index' %}">Home</a></li>
-        {% if request.user.is_authenticated %}
-        <li>
-            <a href="{% url 'notification_new' %}">Create Notification</a>
-        </li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Groups<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="{% url 'groups_my_list' %}">My Groups</a></li>
-              <li><a href="{% url 'group_search' %}">Find Groups</a></li>
-              <li><a href="{% url 'group_new' %}">Create Group</a></li>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#page-top"><img src="/static/website/img/knowhere-text-logo-small.png" style="margin-top: -15px;" alt=""></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'notification_new' %}">Create Notification</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Groups<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="{% url 'groups_my_list' %}">My Groups</a></li>
+                          <li><a href="{% url 'group_search' %}">Find Groups</a></li>
+                          <li><a href="{% url 'group_new' %}">Create Group</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'notification_zones' %}">My Zones</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">My Notifications<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="{% url 'notifications_current' %}">Current</a></li>
+                          <li><a href="{% url 'notifications_past' %}">Past</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_profile' user %}">Profile</a>
+                    </li>
+                    <li>
+                        <a href="/accounts/logout">Logout</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="/accounts/login">Login/Signup</a>
+                    </li>
+                {% endif %}
             </ul>
-        </li>
-        <li>
-            <a href="{% url 'notification_zones' %}">My Zones</a>
-        </li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">My Notifications<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="{% url 'notifications_current' %}">Current</a></li>
-              <li><a href="{% url 'notifications_past' %}">Past</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{% url 'user_profile' user %}">Profile</a>
-        </li>
-        <li>
-            <a href="/accounts/logout">Logout</a>
-        </li>
-        {% else %}
-        <li>
-            <a href="/accounts/login">Login/Signup</a>
-        </li>
-        {% endif %}
-      </ul>
+        </div>
+        <!-- /.navbar-collapse -->
     </div>
-</div>
+    <!-- /.container-fluid -->
+</nav>
