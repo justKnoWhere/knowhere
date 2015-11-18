@@ -12,12 +12,23 @@
             var lon = {{ notification_zone.longitude }};
             var radius = {{ notification_zone.radius }} * 1609.34;  //must be in meters
             var latlon = L.latLng(lat, lon);
-            L.marker([lat, lon]).addTo(map);
+
+            var iconW = 38;
+            var iconH = 50;
+
+            var markerIcon = L.icon({
+                iconUrl: '../../static/website/img/knowhere-logo.png',
+                iconSize:     [iconW, iconH], // size of the icon
+                iconAnchor:   [iconW/2, iconH], // point of the icon which will correspond to marker's location
+                popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+            });
+
+            L.marker([lat, lon], {icon: markerIcon}).addTo(map);
             map.panTo(latlon);
 
             var circle = L.circle([lat, lon], radius, {
-                color: 'green',
-                fillColor: '#03f',
+                color: '#6D4C41',
+                fillColor: '#90CAF9',
                 fillOpacity: 0.2
             }).addTo(map);
 
