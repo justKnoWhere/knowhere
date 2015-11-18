@@ -23,7 +23,10 @@ def group_admin_required(view_function):
 
 
 def index(request):
-    template = loader.get_template('website/index.html')
+    if request.user.is_authenticated():
+        template = loader.get_template('website/user_index.html')
+    else:
+        template = loader.get_template('website/visitor_index.html')
     return HttpResponse(template.render(RequestContext(request)))
 
 
