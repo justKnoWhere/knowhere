@@ -8,12 +8,12 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="{% url 'index' %}">
-        <img style="max-width:25px; margin-top: -7px; margin-right: 5px; float: left;" src="/static/website/img/knowhere-logo.png">KnoWhere
+        <img style="max-width:150px; margin-top: -7px; float: left;" src="/static/website/img/knowhere-text-logo.png">
       </a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'index' %}">Home</a></li>
         {% if request.user.is_authenticated %}
         <li>
             <a href="{% url 'notification_new' %}">Create Notification</a>
