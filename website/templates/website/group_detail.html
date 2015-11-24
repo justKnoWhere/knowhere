@@ -21,6 +21,12 @@
                     <input type="submit" value="Join Group"/>
                 </form>
             </div>
+        {% else %}
+            <div>
+                <form action="{% url 'group_request_join' group.id %}">
+                    <input type="submit" value="Request To Join Group"/>
+                </form>
+            </div>
         {% endif %}
     {% else %}
         <div>

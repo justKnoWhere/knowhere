@@ -5,18 +5,20 @@ from website.forms import NotificationZoneForm, GroupForm, NotificationForm, Gro
 from website.models import NotificationZone, Group, Notification
 from website.utils import GeoCoder, Address
 from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
 from django.db.models import Q
 from haystack.generic_views import SearchView
+from django.core.mail import send_mail
 import datetime
 
 User = get_user_model()
 
 
 def group_admin_required(view_function):
-    def _wrapped_view_function(request, pk):
-        group = get_object_or_404(Group, pk=pk)
+    def _wrapped_view_function(request, **kwargs):
+        group = get_object_or_404(Group, pk=kwargs['pk'])
         if group.admin == request.user:
-            return view_function(group)
+            return view_function(group, **kwargs)
         else:
             return HttpResponseForbidden('<h1>Only the group admin can access this command</h1>')
     return _wrapped_view_function
@@ -70,6 +72,22 @@ def group_join(request, pk):
     return redirect('group_detail', pk)
 
 
+def group_request_join(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    current_site = Site.objects.get_current()
+    send_mail(
+        str.format('{0} wants to join your group: {1}', request.user, group),
+        str.format("{0} wants to join your group: {1}. \n"+
+                   "If you want to allow them to join your group, please copy and paste, or click the following url: \n"+
+                   "{2}/group/{3}/add_user/{4}", request.user, group,
+                    current_site.domain, group.id, request.user.id),
+        'notify@knowhere.com',
+        [group.admin.email],
+        fail_silently=False
+    )
+    return redirect('group_detail', pk)
+
+
 def group_leave(request, pk):
     group = get_object_or_404(Group, pk=pk)
     group.users.remove(request.user)
@@ -97,9 +115,16 @@ def group_detail(request, pk):
 
 
 @group_admin_required
-def group_delete(group):
+def group_delete(group, **kwargs):
     group.delete()
     return redirect('groups_my_list')
+
+
+@group_admin_required
+def group_add_user(group, **kwargs):
+    new_user = User.objects.get(pk=kwargs['user_id'])
+    group.users.add(new_user)
+    return redirect('group_detail', pk=group.pk)
 
 
 def groups_my_list(request):
