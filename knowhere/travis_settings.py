@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'website',
     'crispy_forms',
     'haystack',
+    'leaflet'
 )
 
 SITE_ID = 1
